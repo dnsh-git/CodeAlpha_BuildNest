@@ -1,9 +1,25 @@
 const Product = require("../models/product.model");
 
+const ApiError = require("../utils/ApiError");
+
+// Create Product
 const createProduct = async (productData) => {
+  const existingProduct = await Product.findOne({
+    name: productData.name,
+    brand: productData.brand,
+  });
+
+  if (existingProduct) {
+    throw new ApiError(
+      409,
+      "Product already exists with the same name and brand."
+    );
+  }
+
   return await Product.create(productData);
 };
 
+// Get All Products
 const getAllProducts = async () => {
   return await Product.find();
 };
