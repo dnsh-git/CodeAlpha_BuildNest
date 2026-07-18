@@ -1,10 +1,14 @@
 const Product = require("../models/product.model");
 
 const createProduct = async (productData) => {
-  const product = await Product.create(productData);
-  return product;
+  return await Product.create(productData);
+};
+
+const getAllProducts = async () => {
+  return await Product.find();
 };
 
 module.exports = {
   createProduct,
+  getAllProducts,
 };

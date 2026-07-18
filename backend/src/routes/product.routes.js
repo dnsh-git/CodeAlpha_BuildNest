@@ -10,8 +10,13 @@ const {
 
 const {
   createProduct,
+  getAllProducts,
 } = require("../controllers/product.controller");
 
+// Public Routes
+router.get("/", getAllProducts);
+
+// Admin Routes
 router.post(
   "/",
   protect,
