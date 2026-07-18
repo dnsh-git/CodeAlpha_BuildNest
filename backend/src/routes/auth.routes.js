@@ -9,8 +9,26 @@ const {
 
 const { protect, admin } = require("../middleware/auth.middleware");
 
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+const validate = require("../middleware/validation.middleware");
+
+const {
+  registerValidator,
+  loginValidator,
+} = require("../validators/auth.validator");
+
+router.post(
+  "/register",
+  registerValidator,
+  validate,
+  registerUser
+);
+
+router.post(
+  "/login",
+  loginValidator,
+  validate,
+  loginUser
+);
 
 router.get("/profile", protect, getProfile);
 
