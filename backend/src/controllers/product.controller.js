@@ -1,12 +1,9 @@
 const asyncHandler = require("express-async-handler");
 
 const productService = require("../services/product.service");
-
 const ApiResponse = require("../utils/ApiResponse");
 
-// @desc    Create Product
-// @route   POST /api/products
-// @access  Private (Admin)
+// Create Product
 const createProduct = asyncHandler(async (req, res) => {
   const product = await productService.createProduct(req.body);
 
@@ -19,9 +16,7 @@ const createProduct = asyncHandler(async (req, res) => {
   );
 });
 
-// @desc    Get All Products
-// @route   GET /api/products
-// @access  Public
+// Get All Products
 const getAllProducts = asyncHandler(async (req, res) => {
   const products = await productService.getAllProducts();
 
@@ -34,7 +29,21 @@ const getAllProducts = asyncHandler(async (req, res) => {
   );
 });
 
+// Get Product By ID
+const getProductById = asyncHandler(async (req, res) => {
+  const product = await productService.getProductById(req.params.id);
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      product,
+      "Product fetched successfully"
+    )
+  );
+});
+
 module.exports = {
   createProduct,
   getAllProducts,
+  getProductById,
 };

@@ -11,10 +11,12 @@ const {
 const {
   createProduct,
   getAllProducts,
+  getProductById,
 } = require("../controllers/product.controller");
 
 // Public Routes
 router.get("/", getAllProducts);
+router.get("/:id", getProductById);
 
 // Admin Routes
 router.post(

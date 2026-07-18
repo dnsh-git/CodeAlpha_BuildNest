@@ -24,7 +24,19 @@ const getAllProducts = async () => {
   return await Product.find();
 };
 
+// Get Product By ID
+const getProductById = async (id) => {
+  const product = await Product.findById(id);
+
+  if (!product) {
+    throw new ApiError(404, "Product not found");
+  }
+
+  return product;
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
+  getProductById,
 };
