@@ -19,9 +19,9 @@ const createProduct = async (productData) => {
   return await Product.create(productData);
 };
 
-/// Get All Products (with Search & Category Filter)
+// Get All Products (Search + Category + Brand)
 const getAllProducts = async (query) => {
-    const { search, category } = query;
+    const { search, category, brand } = query;
 
     const filter = {};
 
@@ -52,6 +52,14 @@ const getAllProducts = async (query) => {
     // Category Filter
     if (category) {
         filter.category = category;
+    }
+
+    // Brand Filter
+    if (brand) {
+        filter.brand = {
+            $regex: `^${brand}$`,
+            $options: "i",
+        };
     }
 
     return await Product.find(filter);
