@@ -58,9 +58,23 @@ const updateProduct = asyncHandler(async (req, res) => {
   );
 });
 
+// Delete Product
+const deleteProduct = asyncHandler(async (req, res) => {
+    await productService.deleteProduct(req.params.id);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            null,
+            "Product deleted successfully"
+        )
+    );
+});
+
 module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductById,
-  updateProduct,
+    createProduct,
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct,
 };

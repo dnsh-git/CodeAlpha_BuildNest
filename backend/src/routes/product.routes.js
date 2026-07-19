@@ -9,10 +9,11 @@ const {
 } = require("../validators/product.validator");
 
 const {
-  createProduct,
-  getAllProducts,
-  getProductById,
-  updateProduct,
+    createProduct,
+    getAllProducts,
+    getProductById,
+    updateProduct,
+    deleteProduct,
 } = require("../controllers/product.controller");
 
 // Public Routes
@@ -34,6 +35,13 @@ router.put(
   protect,
   admin,
   updateProduct
+);
+
+router.delete(
+  "/:id",
+  protect,
+  admin,
+  deleteProduct
 );
 
 module.exports = router;
