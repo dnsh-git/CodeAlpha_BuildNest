@@ -35,8 +35,43 @@ const getProductById = async (id) => {
   return product;
 };
 
+// Update Product
+const updateProduct = async (id, productData) => {
+  const product = await Product.findById(id);
+
+  if (!product) {
+    throw new ApiError(404, "Product not found");
+  }
+
+  // Prevent duplicate name + brand
+  const duplicate = await Product.findOne({
+    _id: { $ne: id },
+    name: productData.name,
+    brand: productData.brand,
+  });
+
+  if (duplicate) {
+    throw new ApiError(
+      409,
+      "Another product already exists with the same name and brand."
+    );
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    id,
+    productData,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return updatedProduct;
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
+  updateProduct,
 };

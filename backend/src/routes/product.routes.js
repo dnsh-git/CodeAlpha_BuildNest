@@ -12,6 +12,7 @@ const {
   createProduct,
   getAllProducts,
   getProductById,
+  updateProduct,
 } = require("../controllers/product.controller");
 
 // Public Routes
@@ -26,6 +27,13 @@ router.post(
   createProductValidator,
   validate,
   createProduct
+);
+
+router.put(
+  "/:id",
+  protect,
+  admin,
+  updateProduct
 );
 
 module.exports = router;
