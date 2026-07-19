@@ -19,9 +19,21 @@ const createProduct = async (productData) => {
   return await Product.create(productData);
 };
 
-// Get All Products
-const getAllProducts = async () => {
-  return await Product.find();
+// Get All Products (with Search)
+const getAllProducts = async (query) => {
+  const { search } = query;
+
+  const filter = {};
+
+  if (search) {
+    filter.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { brand: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  return await Product.find(filter);
 };
 
 // Get Product By ID

@@ -18,7 +18,7 @@ const createProduct = asyncHandler(async (req, res) => {
 
 // Get All Products
 const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await productService.getAllProducts();
+  const products = await productService.getAllProducts(req.query);
 
   return res.status(200).json(
     new ApiResponse(
