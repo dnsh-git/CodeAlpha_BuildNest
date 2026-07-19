@@ -5,57 +5,62 @@ const ApiResponse = require("../utils/ApiResponse");
 
 // Create Product
 const createProduct = asyncHandler(async (req, res) => {
-  const product = await productService.createProduct(req.body);
+    const product = await productService.createProduct(req.body);
 
-  return res.status(201).json(
-    new ApiResponse(
-      201,
-      product,
-      "Product created successfully"
-    )
-  );
+    return res.status(201).json(
+        new ApiResponse(
+            201,
+            product,
+            "Product created successfully."
+        )
+    );
 });
 
 // Get All Products
 const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await productService.getAllProducts(req.query);
+    const products = await productService.getAllProducts(req.query);
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      products,
-      "Products fetched successfully"
-    )
-  );
+    const message =
+        products.length > 0
+            ? "Products fetched successfully."
+            : "No products found.";
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            products,
+            message
+        )
+    );
 });
 
 // Get Product By ID
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await productService.getProductById(req.params.id);
+    const product = await productService.getProductById(req.params.id);
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      product,
-      "Product fetched successfully"
-    )
-  );
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            product,
+            "Product fetched successfully."
+        )
+    );
 });
 
 // Update Product
 const updateProduct = asyncHandler(async (req, res) => {
-  const product = await productService.updateProduct(
-    req.params.id,
-    req.body
-  );
+    const product = await productService.updateProduct(
+        req.params.id,
+        req.body
+    );
 
-  return res.status(200).json(
-    new ApiResponse(
-      200,
-      product,
-      "Product updated successfully"
-    )
-  );
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            product,
+            "Product updated successfully."
+        )
+    );
 });
 
 // Delete Product
@@ -66,7 +71,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
         new ApiResponse(
             200,
             null,
-            "Product deleted successfully"
+            "Product deleted successfully."
         )
     );
 });
