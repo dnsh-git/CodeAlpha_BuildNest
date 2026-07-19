@@ -19,9 +19,15 @@ const createProduct = async (productData) => {
   return await Product.create(productData);
 };
 
-// Get All Products (Search + Category + Brand)
+// Get All Products (Search + Category + Brand + Price Filter)
 const getAllProducts = async (query) => {
-    const { search, category, brand } = query;
+    const {
+        search,
+        category,
+        brand,
+        minPrice,
+        maxPrice,
+    } = query;
 
     const filter = {};
 
@@ -49,17 +55,30 @@ const getAllProducts = async (query) => {
         ];
     }
 
-    // Category Filter
+    // Category
     if (category) {
         filter.category = category;
     }
 
-    // Brand Filter
+    // Brand
     if (brand) {
         filter.brand = {
             $regex: `^${brand}$`,
             $options: "i",
         };
+    }
+
+    // Price Filter
+    if (minPrice || maxPrice) {
+        filter.price = {};
+
+        if (minPrice) {
+            filter.price.$gte = Number(minPrice);
+        }
+
+        if (maxPrice) {
+            filter.price.$lte = Number(maxPrice);
+        }
     }
 
     return await Product.find(filter);
