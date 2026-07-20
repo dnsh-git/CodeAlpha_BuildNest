@@ -19,7 +19,6 @@ const createProduct = async (productData) => {
   return await Product.create(productData);
 };
 
-// Get All Products (Search + Category + Brand + Price Filter)
 const getAllProducts = async (query) => {
     const {
         search,
@@ -27,40 +26,32 @@ const getAllProducts = async (query) => {
         brand,
         minPrice,
         maxPrice,
+        sort,
     } = query;
 
     const filter = {};
 
-    // Search
+    // ==========================
+    // Search Filter
+    // ==========================
     if (search) {
         filter.$or = [
-            {
-                name: {
-                    $regex: search,
-                    $options: "i",
-                },
-            },
-            {
-                brand: {
-                    $regex: search,
-                    $options: "i",
-                },
-            },
-            {
-                description: {
-                    $regex: search,
-                    $options: "i",
-                },
-            },
+            { name: { $regex: search, $options: "i" } },
+            { brand: { $regex: search, $options: "i" } },
+            { description: { $regex: search, $options: "i" } },
         ];
     }
 
-    // Category
+    // ==========================
+    // Category Filter
+    // ==========================
     if (category) {
         filter.category = category;
     }
 
-    // Brand
+    // ==========================
+    // Brand Filter
+    // ==========================
     if (brand) {
         filter.brand = {
             $regex: `^${brand}$`,
@@ -68,7 +59,9 @@ const getAllProducts = async (query) => {
         };
     }
 
+    // ==========================
     // Price Filter
+    // ==========================
     if (minPrice || maxPrice) {
         filter.price = {};
 
@@ -81,7 +74,12 @@ const getAllProducts = async (query) => {
         }
     }
 
-    return await Product.find(filter);
+    // ==========================
+    // Sorting
+    // ==========================
+    const sortOption = sort || "-createdAt";
+
+    return await Product.find(filter).sort(sortOption);
 };
 
 // Get Product By ID
