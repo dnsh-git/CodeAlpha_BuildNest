@@ -19,6 +19,7 @@ const createProduct = async (productData) => {
   return await Product.create(productData);
 };
 
+// Get All Products with Filters, Sorting, and Pagination
 const getAllProducts = async (query) => {
     const {
         search,
@@ -27,6 +28,8 @@ const getAllProducts = async (query) => {
         minPrice,
         maxPrice,
         sort,
+        page = 1,
+        limit = 10,
     } = query;
 
     const filter = {};
@@ -79,7 +82,30 @@ const getAllProducts = async (query) => {
     // ==========================
     const sortOption = sort || "-createdAt";
 
-    return await Product.find(filter).sort(sortOption);
+    // ==========================
+    // Pagination
+    // ==========================
+    const currentPage = Number(page);
+    const pageLimit = Number(limit);
+
+    const skip = (currentPage - 1) * pageLimit;
+
+    const totalProducts = await Product.countDocuments(filter);
+
+    const products = await Product.find(filter)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(pageLimit);
+
+    return {
+        products,
+        pagination: {
+            totalProducts,
+            totalPages: Math.ceil(totalProducts / pageLimit),
+            currentPage,
+            pageLimit,
+        },
+    };
 };
 
 // Get Product By ID

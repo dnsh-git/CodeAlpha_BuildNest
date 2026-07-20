@@ -18,17 +18,17 @@ const createProduct = asyncHandler(async (req, res) => {
 
 // Get All Products
 const getAllProducts = asyncHandler(async (req, res) => {
-    const products = await productService.getAllProducts(req.query);
+    const result = await productService.getAllProducts(req.query);
 
     const message =
-        products.length > 0
+        result.products.length > 0
             ? "Products fetched successfully."
             : "No products found.";
 
     return res.status(200).json(
         new ApiResponse(
             200,
-            products,
+            result,
             message
         )
     );
