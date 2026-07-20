@@ -37,11 +37,20 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
 
-    images: [
-      {
+    image: {
+    url: {
         type: String,
-      },
-    ],
+        default: "",
+    },
+    fileId: {
+        type: String,
+        default: "",
+    },
+    name: {
+        type: String,
+        default: "",
+    },
+    },
 
     specifications: {
       type: Map,
