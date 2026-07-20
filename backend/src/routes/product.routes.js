@@ -3,6 +3,7 @@ const router = express.Router();
 
 const { protect, admin } = require("../middleware/auth.middleware");
 const validate = require("../middleware/validation.middleware");
+const upload = require("../middleware/upload.middleware");
 
 const {
   createProductValidator,
@@ -22,12 +23,13 @@ router.get("/:id", getProductById);
 
 // Admin Routes
 router.post(
-  "/",
-  protect,
-  admin,
-  createProductValidator,
-  validate,
-  createProduct
+    "/",
+    protect,
+    admin,
+    upload.single("image"),
+    validate(createProductValidator),
+    validateRequest,
+    createProduct
 );
 
 router.put(
