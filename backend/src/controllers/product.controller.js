@@ -5,7 +5,10 @@ const ApiResponse = require("../utils/ApiResponse");
 
 // Create Product
 const createProduct = asyncHandler(async (req, res) => {
-    const product = await productService.createProduct(req.body);
+    const product = await productService.createProduct(
+    req.body,
+    req.file
+);
 
     return res.status(201).json(
         new ApiResponse(
