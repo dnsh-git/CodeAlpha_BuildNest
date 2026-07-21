@@ -7,6 +7,9 @@ const validate = require("../middleware/validation.middleware");
 const {
     addToCart,
     getCart,
+    updateCartItem,
+    removeCartItem,
+    clearCart,
 } = require("../controllers/cart.controller");
 
 const {
@@ -14,7 +17,7 @@ const {
 } = require("../validators/cart.validator");
 
 // =====================
-// User Cart Routes
+// Cart Routes
 // =====================
 
 // Add Product to Cart
@@ -30,6 +33,28 @@ router.get(
     "/",
     protect,
     getCart
+);
+
+// Update Product Quantity
+router.put(
+    "/:productId",
+    protect,
+    validate(addToCartValidator),
+    updateCartItem
+);
+
+// Remove Product from Cart
+router.delete(
+    "/:productId",
+    protect,
+    removeCartItem
+);
+
+// Clear Entire Cart
+router.delete(
+    "/",
+    protect,
+    clearCart
 );
 
 module.exports = router;
