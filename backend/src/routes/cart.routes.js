@@ -14,11 +14,12 @@ const {
 
 const {
     addToCartValidator,
+    updateCartValidator,
+    removeCartItemValidator,
 } = require("../validators/cart.validator");
 
-// =====================
-// Cart Routes
-// =====================
+// Get User Cart
+router.get("/", protect, getCart);
 
 // Add Product to Cart
 router.post(
@@ -28,29 +29,23 @@ router.post(
     addToCart
 );
 
-// Get Logged-in User Cart
-router.get(
-    "/",
-    protect,
-    getCart
-);
-
 // Update Product Quantity
 router.put(
     "/:productId",
     protect,
-    validate(addToCartValidator),
+    validate(updateCartValidator),
     updateCartItem
 );
 
-// Remove Product from Cart
+// Remove Product
 router.delete(
     "/:productId",
     protect,
+    validate(removeCartItemValidator),
     removeCartItem
 );
 
-// Clear Entire Cart
+// Clear Cart
 router.delete(
     "/",
     protect,
