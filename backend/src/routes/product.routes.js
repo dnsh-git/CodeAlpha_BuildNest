@@ -6,7 +6,7 @@ const validate = require("../middleware/validation.middleware");
 const upload = require("../middleware/upload.middleware");
 
 const {
-  createProductValidator,
+    createProductValidator,
 } = require("../validators/product.validator");
 
 const {
@@ -17,33 +17,38 @@ const {
     deleteProduct,
 } = require("../controllers/product.controller");
 
+// =====================
 // Public Routes
+// =====================
+
 router.get("/", getAllProducts);
 router.get("/:id", getProductById);
 
+// =====================
 // Admin Routes
+// =====================
+
 router.post(
     "/",
     protect,
     admin,
     upload.single("image"),
     validate(createProductValidator),
-    validateRequest,
     createProduct
 );
 
 router.put(
-  "/:id",
-  protect,
-  admin,
-  updateProduct
+    "/:id",
+    protect,
+    admin,
+    updateProduct
 );
 
 router.delete(
-  "/:id",
-  protect,
-  admin,
-  deleteProduct
+    "/:id",
+    protect,
+    admin,
+    deleteProduct
 );
 
 module.exports = router;

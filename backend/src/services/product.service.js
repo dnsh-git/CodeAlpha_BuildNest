@@ -1,22 +1,56 @@
+console.log({
+    PUBLIC: process.env.IMAGEKIT_PUBLIC_KEY,
+    PRIVATE: process.env.IMAGEKIT_PRIVATE_KEY,
+    URL: process.env.IMAGEKIT_URL_ENDPOINT,
+});
 const Product = require("../models/product.model");
-
+const imagekit = require("../config/imagekit");
 const ApiError = require("../utils/ApiError");
 
 // Create Product
-const createProduct = async (productData) => {
-  const existingProduct = await Product.findOne({
-    name: productData.name,
-    brand: productData.brand,
-  });
+const createProduct = async (productData, file) => {
+    // Check duplicate product
+    const existingProduct = await Product.findOne({
+        name: productData.name,
+        brand: productData.brand,
+    });
 
-  if (existingProduct) {
-    throw new ApiError(
-      409,
-      "Product already exists with the same name and brand."
-    );
-  }
+    if (existingProduct) {
+        throw new ApiError(
+            409,
+            "Product already exists with the same name and brand."
+        );
+    }
 
-  return await Product.create(productData);
+    // Default image object
+    let image = {
+        url: "",
+        fileId: "",
+        name: "",
+    };
+
+    // Upload image to ImageKit
+    if (file) {
+        const uploadedImage = await imagekit.upload({
+            file: file.buffer,
+            fileName: `${Date.now()}-${file.originalname}`,
+            folder: "/BuildNest/products",
+        });
+
+        image = {
+            url: uploadedImage.url,
+            fileId: uploadedImage.fileId,
+            name: uploadedImage.name,
+        };
+    }
+
+    // Create product
+    const product = await Product.create({
+        ...productData,
+        image,
+    });
+
+    return product;
 };
 
 // Get All Products with Filters, Sorting, and Pagination

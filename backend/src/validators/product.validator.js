@@ -1,6 +1,12 @@
 const { body } = require("express-validator");
 
 const createProductValidator = [
+  body("name").custom((value, { req }) => {
+    console.log("REQ.BODY INSIDE VALIDATOR:");
+    console.log(req.body);
+    return true;
+  }),
+
   body("name")
     .trim()
     .notEmpty()
