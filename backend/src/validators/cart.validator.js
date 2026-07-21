@@ -2,6 +2,7 @@ const { body } = require("express-validator");
 
 const addToCartValidator = [
     body("productId")
+        .trim()
         .notEmpty()
         .withMessage("Product ID is required")
         .isMongoId()
