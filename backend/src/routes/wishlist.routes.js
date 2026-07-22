@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const protect = require("../middleware/auth.middleware");
+const { protect } = require("../middleware/auth.middleware");
 const validate = require("../middleware/validation.middleware");
 
 const {
