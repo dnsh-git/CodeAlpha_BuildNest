@@ -14,7 +14,7 @@ const placeOrder = async (userId) => {
         name: item.product.name,
         price: item.product.price,
         quantity: item.quantity,
-        image: item.product.image,
+        image: item.product.image || "",
     }));
 
     const totalAmount = orderItems.reduce(

@@ -7,38 +7,24 @@ const orderItemSchema = new mongoose.Schema(
             ref: "Product",
             required: true,
         },
-
         name: {
             type: String,
             required: true,
             trim: true,
         },
-
         price: {
             type: Number,
             required: true,
             min: 0,
         },
-
         quantity: {
             type: Number,
             required: true,
             min: 1,
         },
-
         image: {
-            url: {
-                type: String,
-                default: "",
-            },
-            fileId: {
-                type: String,
-                default: "",
-            },
-            name: {
-                type: String,
-                default: "",
-            },
+            type: String,
+            default: "",
         },
     },
     {
@@ -48,11 +34,6 @@ const orderItemSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
     {
-        orderId: {
-            type: String,
-            unique: true,
-        },
-
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
@@ -90,13 +71,5 @@ const orderSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
-
-orderSchema.pre("save", function (next) {
-    if (!this.orderId) {
-        this.orderId = `ORD-${Date.now()}`;
-    }
-
-    next();
-});
 
 module.exports = mongoose.model("Order", orderSchema);
